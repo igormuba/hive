@@ -1310,10 +1310,10 @@ class wallet_api
       * @param executions how many times should the recurrent transfer be executed
       * @param broadcast true if you wish to broadcast the transaction
       */
-    annotated_signed_transaction recurrent_transfer(
+    serializer_wrapper<annotated_signed_transaction> recurrent_transfer(
             account_name_type from,
             account_name_type to,
-            condenser_api::legacy_asset amount,
+            hive::protocol::legacy_asset amount,
             string memo,
             uint16_t recurrence,
             uint16_t executions,
@@ -1324,7 +1324,7 @@ class wallet_api
 
       * @param from The account from which the funds are coming from
       */
-  vector< database_api::api_recurrent_transfer_object > find_recurrent_transfers(
+  serializer_wrapper<vector< database_api::api_recurrent_transfer_object >> find_recurrent_transfers(
           account_name_type from );
 
     std::map<string,std::function<string(fc::variant,const fc::variants&)>> get_result_formatters() const;
