@@ -847,9 +847,9 @@ public:
         const auto& op = item.get_array()[1].get_object();
         ss << std::left << std::setw(10) << op["block"].as_string() << " ";
         ss << std::left << std::setw(15) << op["trx_id"].as_string() << " ";
-        const auto& opop = op["op"].get_array();
-        ss << std::left << std::setw(20) << opop[0].as_string() << " ";
-        ss << std::left << std::setw(50) << fc::json::to_string(opop[1]) << "\n ";
+        const auto& opop = op["op"].get_object();
+        ss << std::left << std::setw(20) << opop["type"].as_string() << " ";
+        ss << std::left << std::setw(50) << fc::json::to_string(opop["value"]) << "\n ";
       }
       return ss.str();
     };
@@ -2556,7 +2556,7 @@ serializer_wrapper<map< uint32_t, account_history::api_operation_object >> walle
       }
     }
   }
-  return { map< uint32_t, account_history::api_operation_object >() };
+  return { result };
 }
 
 vector< database_api::api_withdraw_vesting_route_object > wallet_api::get_withdraw_routes( const string& account, database_api::sort_order_type sort_type )const

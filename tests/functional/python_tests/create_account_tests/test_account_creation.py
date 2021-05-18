@@ -16,6 +16,7 @@ def test_account_creation():
         init_node.wait_number_of_blocks(3)
 
         #**************************************************************
+        logger.info('create_account...')
         response = wallet.api.create_account('initminer', 'newaccount', '{}', True)
         logger.info(response)
 
@@ -40,6 +41,7 @@ def test_account_creation():
         owner_key = __key_auths[0]
 
         #**************************************************************
+        logger.info('list_my_accounts...')
         response = wallet.api.list_my_accounts([owner_key])
         logger.info(response)
 
@@ -52,6 +54,7 @@ def test_account_creation():
         assert _result['savings_balance'] == '0.000 TESTS'
 
         #**************************************************************
+        logger.info('list_accounts...')
         response = wallet.api.list_accounts('na', 1)
         logger.info(response)
         assert 'result' in response
@@ -59,6 +62,7 @@ def test_account_creation():
         assert response['result'][0] == 'newaccount'
 
         #**************************************************************
+        logger.info('get_account...')
         response = wallet.api.get_account('newaccount')
         logger.info(response)
         assert 'result' in response
@@ -67,15 +71,10 @@ def test_account_creation():
         assert _result['hbd_balance'] == '0.000 TBD'
 
         #**************************************************************
-        response = wallet.api.get_account_history('newaccount', 0, 1)
+        logger.info('get_account_history...')
+        response = wallet.api.get_account_history('initminer', 2, 2)
         logger.info(response)
         assert 'result' in response
+        #this call has a custom formatter so typical JSON is inaccessible
         assert len(response['result']) == 0
 
-        #**************************************************************
-        response = wallet.api.transfer("initminer", "newaccount", "1.000 TESTS", "banana", True)
-        logger.info(response)
-        response = wallet.api.get_account_history('initminer', 3, 3)
-        logger.info(response)
-        assert 'result' in response
-        assert len(response['result']) == 0
