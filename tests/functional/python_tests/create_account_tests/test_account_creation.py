@@ -5,6 +5,9 @@ def test_account_creation():
         init_node = world.create_init_node()
         init_node.config.plugin.append('database_api')
         init_node.config.plugin.append('network_broadcast_api')
+        init_node.config.plugin.append('account_history_rocksdb')
+        init_node.config.plugin.append('account_history')
+        init_node.config.plugin.append('account_history_api')
         init_node.run()
 
         wallet = init_node.attach_wallet()
@@ -44,9 +47,9 @@ def test_account_creation():
         assert len(response['result']) == 1
         _result = response['result'][0]
         assert 'balance' in _result
-        _result['balance'] == '0.000 TESTS'
+        assert _result['balance'] == '0.000 TESTS'
         assert 'savings_balance' in _result
-        _result['savings_balance'] == '0.000 TESTS'
+        assert _result['savings_balance'] == '0.000 TESTS'
 
         #**************************************************************
         response = wallet.api.list_accounts('na', 1)
@@ -54,3 +57,25 @@ def test_account_creation():
         assert 'result' in response
         assert len(response['result']) == 1
         assert response['result'][0] == 'newaccount'
+
+        #**************************************************************
+        response = wallet.api.get_account('newaccount')
+        logger.info(response)
+        assert 'result' in response
+        _result = response['result']
+        assert 'hbd_balance' in _result
+        assert _result['hbd_balance'] == '0.000 TBD'
+
+        #**************************************************************
+        response = wallet.api.get_account_history('newaccount', 0, 1)
+        logger.info(response)
+        assert 'result' in response
+        assert len(response['result']) == 0
+
+        #**************************************************************
+        response = wallet.api.transfer("initminer", "newaccount", "1.000 TESTS", "banana", True)
+        logger.info(response)
+        response = wallet.api.get_account_history('initminer', 3, 3)
+        logger.info(response)
+        assert 'result' in response
+        assert len(response['result']) == 0
