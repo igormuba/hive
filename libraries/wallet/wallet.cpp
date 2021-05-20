@@ -357,6 +357,11 @@ public:
     return *account;
   }
 
+  vector<database_api::api_account_object> get_accounts( const vector<string>& account_names ) const
+  {
+    return _remote_wallet_bridge_api->get_accounts( {variant(account_names)}, LOCK );
+  }
+
   string get_wallet_filename() const { return _wallet_filename; }
 
   optional<fc::ecc::private_key>  try_get_private_key(const public_key_type& id)const
@@ -1121,6 +1126,11 @@ string wallet_api::get_wallet_filename() const
 serializer_wrapper<database_api::api_account_object> wallet_api::get_account( const string& account_name ) const
 {
   return { my->get_account( account_name ) };
+}
+
+serializer_wrapper<vector<database_api::api_account_object>> wallet_api::get_accounts( const vector<string>& account_names ) const
+{
+  return { my->get_accounts( account_names ) };
 }
 
 bool wallet_api::import_key(const string& wif_key)

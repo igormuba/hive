@@ -181,6 +181,13 @@ class wallet_api
       */
     serializer_wrapper<database_api::api_account_object> get_account( const string& account_name ) const;
 
+    /** Returns information about the given accounts.
+      *
+      * @param account_name the names of the accounts to provide information about
+      * @returns the public account data stored in the blockchain
+      */
+    serializer_wrapper<vector<database_api::api_account_object>> get_accounts( const vector<string>& account_names ) const;
+
     /** Returns the current wallet filename.
       *
       * This is the filename that will be used when automatically saving the wallet.
@@ -1375,6 +1382,7 @@ FC_API( hive::wallet::wallet_api,
       (list_witnesses)
       (get_witness)
       (get_account)
+      (get_accounts)
       (get_block)
       (get_ops_in_block)
       (get_feed_history)
