@@ -14,42 +14,42 @@ def test_delegate():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'alice', '{}', True)
+        response = wallet.api.create_account('initminer', 'alice', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'alice', '200.000 TESTS', 'avocado', True)
+        response = wallet.api.transfer('initminer', 'alice', '200.000 TESTS', 'avocado')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'alice', '100.000 TBD', 'banana', True)
+        response = wallet.api.transfer('initminer', 'alice', '100.000 TBD', 'banana')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'alice', '50.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'alice', '50.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('alice', 'bob', '{}', True)
+        response = wallet.api.create_account('alice', 'bob', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('alice', 'bob', '50.000 TESTS', 'lemon', True)
+        response = wallet.api.transfer('alice', 'bob', '50.000 TESTS', 'lemon')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('alice', 'bob', '25.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('alice', 'bob', '25.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         logger.info('delegate_vesting_shares...')
-        response = wallet.api.delegate_vesting_shares('alice', 'bob', '1.123456 VESTS', True)
+        response = wallet.api.delegate_vesting_shares('alice', 'bob', '1.123456 VESTS')
         logger.info(response)
 
         #**************************************************************
@@ -78,7 +78,7 @@ def test_delegate():
 
         #**************************************************************
         logger.info('delegate_vesting_shares_and_transfer...')
-        response = wallet.api.delegate_vesting_shares_and_transfer('alice', 'bob', '1.000000 VESTS', '6.666 TBD', 'watermelon', True)
+        response = wallet.api.delegate_vesting_shares_and_transfer('alice', 'bob', '1.000000 VESTS', '6.666 TBD', 'watermelon')
         logger.info(response)
 
         #**************************************************************
@@ -107,7 +107,7 @@ def test_delegate():
 
         #**************************************************************
         logger.info('delegate_vesting_shares_nonblocking...')
-        response = wallet.api.delegate_vesting_shares_nonblocking('bob', 'alice', '0.100000 VESTS', True)
+        response = wallet.api.delegate_vesting_shares_nonblocking('bob', 'alice', '0.100000 VESTS')
         logger.info(response)
 
         logger.info('Waiting...')
@@ -141,7 +141,7 @@ def test_delegate():
 
         #**************************************************************
         logger.info('delegate_vesting_shares_and_transfer_nonblocking...')
-        response = wallet.api.delegate_vesting_shares_and_transfer_nonblocking('bob', 'alice', '0.100000 VESTS', '6.555 TBD', 'pear', True)
+        response = wallet.api.delegate_vesting_shares_and_transfer_nonblocking('bob', 'alice', '0.100000 VESTS', '6.555 TBD', 'pear')
         logger.info(response)
 
         logger.info('Waiting...')

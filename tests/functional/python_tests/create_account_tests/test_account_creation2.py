@@ -24,18 +24,18 @@ def test_account_creation():
        
         #**************************************************************
         logger.info('claim_account_creation...')
-        response = wallet.api.claim_account_creation('initminer', '0.000 TESTS', True)
+        response = wallet.api.claim_account_creation('initminer', '0.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         logger.info('claim_account_creation_nonblocking...')
-        response = wallet.api.claim_account_creation_nonblocking('initminer', '0.000 TESTS', True)
+        response = wallet.api.claim_account_creation_nonblocking('initminer', '0.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         try:
           logger.info('create_account_delegated...')
-          response = wallet.api.create_account_delegated('initminer', '2.987 TESTS', '6.123456 VESTS', 'alicex', '{}', True )
+          response = wallet.api.create_account_delegated('initminer', '2.987 TESTS', '6.123456 VESTS', 'alicex', '{}')
           logger.info(response)
         except Exception as e:
           message = str(e)
@@ -45,14 +45,14 @@ def test_account_creation():
         #**************************************************************
         logger.info('create_account_with_keys...')
         key = 'TST8grZpsMPnH7sxbMVZHWEu1D26F3GwLW1fYnZEuwzT4Rtd57AER'
-        response = wallet.api.create_account_with_keys('initminer', 'alice1', '{}', key, key, key, key, True)
+        response = wallet.api.create_account_with_keys('initminer', 'alice1', '{}', key, key, key, key)
         logger.info(response)
 
         #**************************************************************
         try:
           logger.info('create_account_with_keys_delegated...')
           key = 'TST8grZpsMPnH7sxbMVZHWEu1D26F3GwLW1fYnZEuwzT4Rtd57AER'
-          response = wallet.api.create_account_with_keys_delegated('initminer', '2.987 TESTS', '6.123456 VESTS', 'alicey', '{}', key, key, key, key, True)
+          response = wallet.api.create_account_with_keys_delegated('initminer', '2.987 TESTS', '6.123456 VESTS', 'alicey', '{}', key, key, key, key)
           logger.info(response)
         except Exception as e:
           message = str(e)
@@ -62,7 +62,7 @@ def test_account_creation():
         #**************************************************************
         logger.info('create_funded_account_with_keys...')
         key = 'TST8grZpsMPnH7sxbMVZHWEu1D26F3GwLW1fYnZEuwzT4Rtd57AER'
-        response = wallet.api.create_funded_account_with_keys('initminer', 'alice2', '2.456 TESTS', 'banana', '{}', key, key, key, key, True)
+        response = wallet.api.create_funded_account_with_keys('initminer', 'alice2', '2.456 TESTS', 'banana', '{}', key, key, key, key)
         logger.info(response)
 
         #**************************************************************

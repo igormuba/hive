@@ -24,17 +24,17 @@ def test_update():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'alice', '{}', True)
+        response = wallet.api.create_account('initminer', 'alice', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         logger.info('update_account_auth_account...')
-        response = wallet.api.update_account_auth_account('alice', 'posting', 'initminer', 2, True)
+        response = wallet.api.update_account_auth_account('alice', 'posting', 'initminer', 2)
         logger.info(response)
 
         #**************************************************************
@@ -57,7 +57,7 @@ def test_update():
 
         #**************************************************************
         logger.info('update_account_auth_key...')
-        response = wallet.api.update_account_auth_key('alice', 'posting', 'TST8ViK3T9FHbbtQs9Mo5odBM6tSmtFEVCvjEDKNPqKe9U1bJs53f', 3, True)
+        response = wallet.api.update_account_auth_key('alice', 'posting', 'TST8ViK3T9FHbbtQs9Mo5odBM6tSmtFEVCvjEDKNPqKe9U1bJs53f', 3)
         logger.info(response)
 
         #**************************************************************
@@ -80,7 +80,7 @@ def test_update():
 
         #**************************************************************
         logger.info('update_account_auth_threshold...')
-        response = wallet.api.update_account_auth_threshold('alice', 'posting', 4, True)
+        response = wallet.api.update_account_auth_threshold('alice', 'posting', 4)
         logger.info(response)
 
         #**************************************************************
@@ -102,7 +102,7 @@ def test_update():
 
         #**************************************************************
         logger.info('update_account_memo_key...')
-        response = wallet.api.update_account_memo_key('alice', 'TST84oS1GW3yb9QaRaGztrqH5cHqeFFyLgLGSK4FoLEoDFBJqCnSJ', True)
+        response = wallet.api.update_account_memo_key('alice', 'TST84oS1GW3yb9QaRaGztrqH5cHqeFFyLgLGSK4FoLEoDFBJqCnSJ')
         logger.info(response)
 
         #**************************************************************
@@ -118,7 +118,7 @@ def test_update():
 
         #**************************************************************
         logger.info('update_account_meta...')
-        response = wallet.api.update_account_meta('alice', '{ "test" : 4 }', True)
+        response = wallet.api.update_account_meta('alice', '{ "test" : 4 }')
         logger.info(response)
 
         #**************************************************************
@@ -135,7 +135,7 @@ def test_update():
         #**************************************************************
         logger.info('update_account...')
         key = 'TST8grZpsMPnH7sxbMVZHWEu1D26F3GwLW1fYnZEuwzT4Rtd57AER'
-        response = wallet.api.update_account('alice', '{}', key, key, key, key, True)
+        response = wallet.api.update_account('alice', '{}', key, key, key, key)
         logger.info(response)
 
         #**************************************************************
@@ -153,7 +153,7 @@ def test_update():
 
         #**************************************************************
         logger.info('update_witness...')
-        response = wallet.api.update_witness('initminer', 'http:\\url.html', 'TST6LLegbAgLAy28EHrffBVuANFWcFgmqRMW13wBmTExqFE9SCkg4', { 'account_creation_fee':{"amount":"2789","precision":3,"nai":"@@000000021"}, 'maximum_block_size' : 131072, 'hbd_interest_rate' : 1000 }, True )
+        response = wallet.api.update_witness('initminer', 'http:\\url.html', 'TST6LLegbAgLAy28EHrffBVuANFWcFgmqRMW13wBmTExqFE9SCkg4', { 'account_creation_fee':{"amount":"2789","precision":3,"nai":"@@000000021"}, 'maximum_block_size' : 131072, 'hbd_interest_rate' : 1000 } )
         logger.info(response)
 
         # tests for 'update_proposal', 'update_proposal_votes' have own group of tests

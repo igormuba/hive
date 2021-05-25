@@ -14,42 +14,42 @@ def test_escrow():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'alice', '{}', True)
+        response = wallet.api.create_account('initminer', 'alice', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'alice', '200.000 TESTS', 'avocado', True)
+        response = wallet.api.transfer('initminer', 'alice', '200.000 TESTS', 'avocado')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'alice', '100.000 TBD', 'banana', True)
+        response = wallet.api.transfer('initminer', 'alice', '100.000 TBD', 'banana')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'alice', '50.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'alice', '50.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('alice', 'bob', '{}', True)
+        response = wallet.api.create_account('alice', 'bob', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('alice', 'carol', '{}', True)
+        response = wallet.api.create_account('alice', 'carol', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('alice', 'bob', '50.000 TESTS', 'lemon', True)
+        response = wallet.api.transfer('alice', 'bob', '50.000 TESTS', 'lemon')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('alice', 'bob', '25.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('alice', 'bob', '25.000 TESTS')
         logger.info(response)
 
         #**************************************************************
@@ -75,7 +75,7 @@ def test_escrow():
 
         # #**************************************************************
         logger.info('escrow_transfer...')
-        response = wallet.api.escrow_transfer('alice', 'bob', 'carol', 99, '1.000 TBD', '2.000 TESTS', '5.000 TBD', '2029-06-02T00:00:00', '2029-06-02T01:01:01', '{}', True)
+        response = wallet.api.escrow_transfer('alice', 'bob', 'carol', 99, '1.000 TBD', '2.000 TESTS', '5.000 TBD', '2029-06-02T00:00:00', '2029-06-02T01:01:01', '{}')
         logger.info(response)
 
         #**************************************************************
@@ -101,12 +101,12 @@ def test_escrow():
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'carol', '50.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'carol', '50.000 TESTS')
         logger.info(response)
 
         #**************************************************************
         logger.info('escrow_approve...')
-        response = wallet.api.escrow_approve('alice', 'bob', 'carol', 'carol', 99, True, True)
+        response = wallet.api.escrow_approve('alice', 'bob', 'carol', 'carol', 99, True)
         logger.info(response)
 
         #**************************************************************
@@ -132,7 +132,7 @@ def test_escrow():
 
         #**************************************************************
         logger.info('escrow_approve...')
-        response = wallet.api.escrow_approve('alice', 'bob', 'carol', 'bob', 99, True, True)
+        response = wallet.api.escrow_approve('alice', 'bob', 'carol', 'bob', 99, True)
         logger.info(response)
 
         #**************************************************************
@@ -158,7 +158,7 @@ def test_escrow():
 
         #**************************************************************
         logger.info('escrow_dispute...')
-        response = wallet.api.escrow_dispute('alice', 'bob', 'carol', 'alice', 99, True)
+        response = wallet.api.escrow_dispute('alice', 'bob', 'carol', 'alice', 99)
         logger.info(response)
 
         #**************************************************************
@@ -184,7 +184,7 @@ def test_escrow():
 
         #**************************************************************
         logger.info('escrow_release...')
-        response = wallet.api.escrow_release('alice', 'bob', 'carol', 'carol', 'bob', 99, '1.000 TBD', '2.000 TESTS', True)
+        response = wallet.api.escrow_release('alice', 'bob', 'carol', 'carol', 'bob', 99, '1.000 TBD', '2.000 TESTS')
         logger.info(response)
 
         #**************************************************************

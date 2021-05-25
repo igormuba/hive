@@ -17,7 +17,7 @@ def test_account_creation():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'newaccount', '{}', True)
+        response = wallet.api.create_account('initminer', 'newaccount', '{}')
         logger.info(response)
 
         assert 'result' in response

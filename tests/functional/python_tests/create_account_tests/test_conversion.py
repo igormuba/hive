@@ -15,17 +15,17 @@ def test_getters():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'alice', '{}', True)
+        response = wallet.api.create_account('initminer', 'alice', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'alice', '200.000 TESTS', 'avocado', True)
+        response = wallet.api.transfer('initminer', 'alice', '200.000 TESTS', 'avocado')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS')
         logger.info(response)
 
         assert 'result' in response
@@ -47,7 +47,7 @@ def test_getters():
 
         #**************************************************************
         logger.info('convert_hive_with_collateral...')
-        response = wallet.api.convert_hive_with_collateral('alice', '4.000 TESTS', True)
+        response = wallet.api.convert_hive_with_collateral('alice', '4.000 TESTS')
         logger.info(response)
 
         assert 'result' in response
@@ -104,7 +104,7 @@ def test_getters():
 
         #**************************************************************
         logger.info('convert_hbd...')
-        response = wallet.api.convert_hbd('alice', '0.500 TBD', True)
+        response = wallet.api.convert_hbd('alice', '0.500 TBD')
         logger.info(response)
 
         assert 'result' in response

@@ -14,17 +14,17 @@ def test_transfer():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'newaccount', '{}', True)
+        response = wallet.api.create_account('initminer', 'newaccount', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'newaccount2', '{}', True)
+        response = wallet.api.create_account('initminer', 'newaccount2', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'newaccount', '100.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'newaccount', '100.000 TESTS')
         logger.info(response)
 
         #**************************************************************
@@ -43,22 +43,22 @@ def test_transfer():
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'newaccount', '5.432 TESTS', 'banana', True)
+        response = wallet.api.transfer('initminer', 'newaccount', '5.432 TESTS', 'banana')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer...')
-        response = wallet.api.transfer('initminer', 'newaccount', '9.169 TBD', 'banana2', True)
+        response = wallet.api.transfer('initminer', 'newaccount', '9.169 TBD', 'banana2')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_savings...')
-        response = wallet.api.transfer_to_savings('initminer', 'newaccount', '15.432 TESTS', 'pomelo', True)
+        response = wallet.api.transfer_to_savings('initminer', 'newaccount', '15.432 TESTS', 'pomelo')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_savings...')
-        response = wallet.api.transfer_to_savings('initminer', 'newaccount', '19.169 TBD', 'pomelo2', True)
+        response = wallet.api.transfer_to_savings('initminer', 'newaccount', '19.169 TBD', 'pomelo2')
         logger.info(response)
 
         #**************************************************************
@@ -76,12 +76,12 @@ def test_transfer():
 
         #**************************************************************
         logger.info('transfer_from_savings...')
-        response = wallet.api.transfer_from_savings('newaccount', 7, 'newaccount2', '0.001 TESTS', 'kiwi', True)
+        response = wallet.api.transfer_from_savings('newaccount', 7, 'newaccount2', '0.001 TESTS', 'kiwi')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_from_savings...')
-        response = wallet.api.transfer_from_savings('newaccount', 8, 'newaccount2', '0.001 TBD', 'kiwi2', True)
+        response = wallet.api.transfer_from_savings('newaccount', 8, 'newaccount2', '0.001 TBD', 'kiwi2')
         logger.info(response)
 
         #**************************************************************
@@ -99,17 +99,17 @@ def test_transfer():
 
         #**************************************************************
         logger.info('transfer_nonblocking...')
-        response = wallet.api.transfer_nonblocking('newaccount', 'newaccount2', '0.100 TESTS', 'mango', True)
+        response = wallet.api.transfer_nonblocking('newaccount', 'newaccount2', '0.100 TESTS', 'mango')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_nonblocking...')
-        response = wallet.api.transfer_nonblocking('newaccount', 'newaccount2', '0.200 TBD', 'mango2', True)
+        response = wallet.api.transfer_nonblocking('newaccount', 'newaccount2', '0.200 TBD', 'mango2')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting_nonblocking...')
-        response = wallet.api.transfer_to_vesting_nonblocking('initminer', 'newaccount', '100.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting_nonblocking('initminer', 'newaccount', '100.000 TESTS')
         logger.info(response)
 
         logger.info('Waiting...')
@@ -130,7 +130,7 @@ def test_transfer():
 
         #**************************************************************
         logger.info('cancel_transfer_from_savings...')
-        response = wallet.api.cancel_transfer_from_savings('newaccount', 7, True)
+        response = wallet.api.cancel_transfer_from_savings('newaccount', 7)
         logger.info(response)
 
         #**************************************************************

@@ -15,12 +15,12 @@ def test_getters():
 
         #**************************************************************
         logger.info('create_account...')
-        response = wallet.api.create_account('initminer', 'alice', '{}', True)
+        response = wallet.api.create_account('initminer', 'alice', '{}')
         logger.info(response)
 
         #**************************************************************
         logger.info('transfer_to_vesting...')
-        response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS', True)
+        response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS')
         logger.info(response)
 
         assert 'result' in response
