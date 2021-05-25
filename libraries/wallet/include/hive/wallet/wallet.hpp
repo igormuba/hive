@@ -119,7 +119,7 @@ class wallet_api
       *
       * @returns Public block data on the blockchain
       */
-    serializer_wrapper<optional< block_api::api_signed_block_object >> get_block( uint32_t num );
+    optional<serializer_wrapper<block_api::api_signed_block_object>> get_block( uint32_t num );
 
     /** Returns sequence of operations included/generated in a specified block
       *
@@ -665,7 +665,7 @@ class wallet_api
       *
       * @returns All pending conversion requests by account
       */
-    vector< database_api::api_convert_request_object > get_conversion_requests( const string& owner );
+    serializer_wrapper<vector< database_api::api_convert_request_object >> get_conversion_requests( const string& owner );
 
     /** Returns collateralized conversion requests by an account
       *
@@ -1490,5 +1490,4 @@ namespace fc {
 
 } // fc
 
-FC_REFLECT_SIMPLE_TEMPLATE_EMPTY( (typename T), optional<T> )
 FC_REFLECT_TEMPLATE( (typename T), hive::wallet::serializer_wrapper<T>, (value) )

@@ -1022,9 +1022,15 @@ bool wallet_api::copy_wallet_file(const string& destination_filename)
   return my->copy_wallet_file(destination_filename);
 }
 
-serializer_wrapper<optional< block_api::api_signed_block_object >> wallet_api::get_block(uint32_t num)
+optional<serializer_wrapper<block_api::api_signed_block_object>> wallet_api::get_block(uint32_t num)
 {
-  return { my->_remote_wallet_bridge_api->get_block( {num}, LOCK ).block };
+  block_api::get_block_return res = my->_remote_wallet_bridge_api->get_block( {num}, LOCK );
+  if( res.block.valid() )
+    return serializer_wrapper<block_api::api_signed_block_object>{ std::move( *(res.block) ) };
+  else
+  {
+    return serializer_wrapper<block_api::api_signed_block_object>{ block_api::api_signed_block_object() };
+  }
 }
 
 serializer_wrapper<vector< account_history::api_operation_object >> wallet_api::get_ops_in_block(uint32_t block_num, bool only_virtual)
@@ -2451,9 +2457,9 @@ serializer_wrapper<annotated_signed_transaction> wallet_api::publish_feed(
   return { my->sign_transaction( tx, broadcast ) };
 }
 
-vector< database_api::api_convert_request_object > wallet_api::get_conversion_requests( const string& owner_account )
+serializer_wrapper<vector< database_api::api_convert_request_object >> wallet_api::get_conversion_requests( const string& owner_account )
 {
-  return my->_remote_wallet_bridge_api->get_conversion_requests( {owner_account}, LOCK );
+  return { my->_remote_wallet_bridge_api->get_conversion_requests( {owner_account}, LOCK ) };
 }
 
 serializer_wrapper<vector< database_api::api_collateralized_convert_request_object >> wallet_api::get_collateralized_conversion_requests( const string& owner_account )
