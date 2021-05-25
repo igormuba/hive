@@ -46,7 +46,7 @@ typedef hive::plugins::account_history::account_history_plugin ah_plugin;
 using std::cout;
 using std::cerr;
 
-clean_database_fixture::clean_database_fixture( size_t shared_file_size_in_mb, fc::optional<uint32_t> hardfork )
+clean_database_fixture::clean_database_fixture( size_t shared_file_size_in_mb, fc::optional<uint32_t> hardfork, bool register_ah_plugin /*= true*/)
 {
   try {
   int argc = boost::unit_test::framework::master_test_suite().argc;
@@ -60,7 +60,11 @@ clean_database_fixture::clean_database_fixture( size_t shared_file_size_in_mb, f
       std::cout << "running test " << boost::unit_test::framework::current_test_case().p_name << std::endl;
   }
 
-  appbase::app().register_plugin< ah_plugin >();
+  if(register_ah_plugin)
+    appbase::app().register_plugin< ah_plugin >();
+  else
+    ilog("Skipped registration of account_history plugin");
+
   db_plugin = &appbase::app().register_plugin< hive::plugins::debug_node::debug_node_plugin >();
   appbase::app().register_plugin< hive::plugins::rc::rc_plugin >();
   appbase::app().register_plugin< hive::plugins::witness::witness_plugin >();

@@ -13,6 +13,8 @@
 
 #include <hive/chain/util/reward.hpp>
 
+#include <hive/utilities/benchmark_dumper.hpp>
+
 #include <hive/plugins/rc/rc_objects.hpp>
 #include <hive/plugins/rc/resource_count.hpp>
 
@@ -28,6 +30,8 @@
 using namespace hive;
 using namespace hive::chain;
 using namespace hive::protocol;
+using hive::utilities::benchmark_dumper;
+
 using fc::string;
 
 #define VOTING_MANABAR( account_name ) db->get_account( account_name ).voting_manabar
@@ -9820,8 +9824,24 @@ BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_01 )
   FC_LOG_AND_RETHROW()
 }
 
+BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02 )
+struct rt_bench_db_fixture : public clean_database_fixture
+{
+  rt_bench_db_fixture(size_t shared_file_size_in_mb = 16*1024, fc::optional<uint32_t> hardfork = fc::optional<uint32_t>()) :
+    clean_database_fixture(shared_file_size_in_mb, hardfork, false) {}
+
+  virtual ~rt_bench_db_fixture() {}
+
+  uint64_t get_free_shm(uint32_t divisor = 1024) const
+  {
+    return (db->get_max_memory() - db->get_free_memory())/divisor;
+  }
+};
+
+BOOST_FIXTURE_TEST_SUITE(rt_bench, rt_bench_db_fixture)
+
+BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02, * boost::unit_test::disabled())
 {
   try
   {
@@ -9851,32 +9871,64 @@ BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02 )
     constexpr int max_recurrent_transfers_per_day{ blocks_per_day * HIVE_MAX_RECURRENT_TRANSFERS_PER_BLOCK};
     constexpr int actors_count_to_overflow{ (max_recurrent_transfers_per_day / HIVE_MAX_OPEN_RECURRENT_TRANSFERS) + 10 /* <- 10 more accounts */ };
 
+    BOOST_TEST_MESSAGE("Attempting to create " + std::to_string(actors_count_to_overflow) + " accounts...");
+
     std::vector<account_holder_t> accounts;
     accounts.reserve( actors_count_to_overflow );
-    const auto& initminer = db->get_account("initminer");
+    //const auto& initminer = db->get_account("initminer");
+
+    auto blockNo = db->head_block_num();
+
+    benchmark_dumper dumper;
+    dumper.initialize([](benchmark_dumper::database_object_sizeof_cntr_t&) {}, "rt_bench.json");
 
     for(int i = 0; i < actors_count_to_overflow; ++i)
     {
-      std::cout << "init: " << initminer.balance.amount.value << std::endl;
+      //std::cout << "init: " << initminer.balance.amount.value << std::endl;
       accounts.emplace_back( *this, fc::string("actor") + std::to_string(i) );
       if(i % 10 == 0) generate_block();
-      BOOST_REQUIRE( 1 == 1 );
+      //BOOST_REQUIRE( 1 == 1 );
       // std::cout << "added account: " << i << std::endl;
       // if(i == 1'0000) FC_ASSERT(false);
     }
 
+    blockNo = db->head_block_num();
+    
+    const auto& measure = dumper.measure(blockNo, [](benchmark_dumper::index_memory_details_cntr_t&, bool) {});
+    ilog("Created ${n} accounts in time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak), ${shm} (shared memory) kilobytes.",
+      ("n", actors_count_to_overflow)
+      ("rt", measure.real_ms)
+      ("ct", measure.cpu_ms)
+      ("cm", measure.current_mem)
+      ("pm", measure.peak_mem)
+      ("shm", get_free_shm())
+    );
+
     for(int i = 0; i < actors_count_to_overflow; ++i)
     {
-      std::cout << "init: " << initminer.balance.amount.value << ", fund:" << i << ", acc: " << accounts[i].name.operator fc::string() << std::endl;
+//      std::cout << "init: " << initminer.balance.amount.value << ", fund:" << i << ", acc: " << accounts[i].name.operator fc::string() << std::endl;
       fund( accounts[i].name, ASSET("10.000 TESTS") );
       if(i % 10 == 0) generate_block();
       BOOST_REQUIRE( 1 == 1 );
     }
     fund( "alice", ASSET("10.000 TESTS") );
-    BOOST_REQUIRE( 1 == 1 );
+    //BOOST_REQUIRE( 1 == 1 );
     generate_blocks(20);
 
     validate_database();
+
+    {
+      blockNo = db->head_block_num();
+      const auto& measure = dumper.measure(blockNo, [](benchmark_dumper::index_memory_details_cntr_t&, bool) {});
+      ilog("${n} accounts have supplied funds in time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak), ${shm} (shared memory) kilobytes.",
+        ("n", actors_count_to_overflow)
+        ("rt", measure.real_ms)
+        ("ct", measure.cpu_ms)
+        ("cm", measure.current_mem)
+        ("pm", measure.peak_mem)
+        ("shm", get_free_shm())
+        );
+    }
 
     // recurrent_transfer_operation ref_op;
     // ref_op.memo = "memo";
@@ -9885,12 +9937,28 @@ BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02 )
     // ref_op.executions = 5;
     // const size_t ami_size = db->get_index<account_index>().indicies().size() * sizeof(typename hive::chain::account_object);
 
+    size_t created_transfer_objects = 0;
+
     const size_t size = accounts.size();
     for(size_t i = 0; i < size; ++i)
     {
       BOOST_REQUIRE_NE( i, std::numeric_limits<size_t>::max() );
       std::cout << i << " / " << size << std::endl;
-      if(i % 4 == 0) generate_block();
+      if(i % 10 == 0)
+      {
+      generate_block();
+
+      blockNo = db->head_block_num();
+      const auto& measure = dumper.measure(blockNo, [](benchmark_dumper::index_memory_details_cntr_t&, bool) {});
+      ilog("${n} recurrent transfer object created in time: ${rt} ms (real), ${ct} ms (cpu). Memory usage: ${cm} (current), ${pm} (peak), ${shm} (shared memory) kilobytes.",
+        ("n", created_transfer_objects)
+        ("rt", measure.real_ms)
+        ("ct", measure.cpu_ms)
+        ("cm", measure.current_mem)
+        ("pm", measure.peak_mem)
+        ("shm", get_free_shm())
+        );
+      }
   // _db.create< recurrent_transfer_object >(
   // _db.head_block_time(), 
   // from_account.get_id(), 
@@ -9909,6 +9977,7 @@ BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02 )
         const auto& x = db->create<recurrent_transfer_object>( db->head_block_time(), accounts[i].id, accounts[j].id, ASSET( "0.001 TESTS" ), memo, 24, 5 );
         db->modify(x, [&](recurrent_transfer_object& obj){ obj.set_recurrence_trigger_date(db->head_block_time(), obj.recurrence); });
         db->modify(db->get_account(accounts[i].id), [](account_object& obj) { obj.open_recurrent_transfers++;});
+        ++created_transfer_objects;
       }
     }
 
@@ -9939,19 +10008,19 @@ BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02 )
     // }
 
     generate_blocks( 1200 ); // 1 hour
-    std::cout << "after 1h alice: " << alice.balance.amount.value << std::endl;
+    std::cout << "after 1h alice: " << get_balance("alice").amount.value << std::endl;
 
     generate_blocks( 23 * 1200 ); // 1 day
-    std::cout << "after 1 day alice: " << alice.balance.amount.value << std::endl;
+    std::cout << "after 1 day alice: " << get_balance("alice").amount.value << std::endl;
 
     generate_blocks( 6 * 24 * 1200 ); // 1 week
-    std::cout << "after 1 week alice: " << alice.balance.amount.value << std::endl;
+    std::cout << "after 1 week alice: " << get_balance("alice").amount.value << std::endl;
 
     generate_blocks( 3 * 7 * 24 * 1200 ); // 1 month
-    std::cout << "after 1 month alice: " << alice.balance.amount.value << std::endl;
+    std::cout << "after 1 month alice: " << get_balance("alice").amount.value << std::endl;
 
     generate_blocks( 4 * 7 * 24 * 1200 ); // 2 month
-    std::cout << "after 2 month alice: " << alice.balance.amount.value << std::endl;
+    std::cout << "after 2 month alice: " << get_balance("alice").amount.value << std::endl;
 
     validate_database();
  }

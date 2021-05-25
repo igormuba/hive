@@ -332,8 +332,7 @@ public:
 
 struct clean_database_fixture : public database_fixture
 {
-	constexpr static size_t big_db_size_in_mb = 1024 * 40;
-  clean_database_fixture( size_t shared_file_size_in_mb = big_db_size_in_mb, fc::optional<uint32_t> hardfork = fc::optional<uint32_t>() );
+  clean_database_fixture( size_t shared_file_size_in_mb = shared_file_size_in_mb_512, fc::optional<uint32_t> hardfork = fc::optional<uint32_t>(), bool register_ah_plugin = true );
   virtual ~clean_database_fixture();
 
   void resize_shared_mem( uint64_t size, fc::optional<uint32_t> hardfork = fc::optional<uint32_t>() );
