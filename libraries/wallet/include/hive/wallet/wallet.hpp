@@ -1017,7 +1017,7 @@ class wallet_api
       * @return the signed version of the transaction
       */
     serializer_wrapper<annotated_signed_transaction> sign_transaction(
-      const signed_transaction& tx,
+      const serializer_wrapper<annotated_signed_transaction>& tx,
       bool broadcast = false);
 
     /** Returns an uninitialized object representing a given blockchain operation.
@@ -1485,7 +1485,13 @@ namespace fc {
   template<typename T>
   inline void from_variant( const fc::variant& var, hive::wallet::serializer_wrapper<T>& a )
   {
+    //Compatibility with older shape of asset
+    bool old_legacy_enabled = hive::protocol::dynamic_serializer::legacy_enabled;
+    hive::protocol::dynamic_serializer::legacy_enabled = true;
+
     from_variant( var, a.value );
+
+    hive::protocol::dynamic_serializer::legacy_enabled = old_legacy_enabled;
   }
 
 } // fc

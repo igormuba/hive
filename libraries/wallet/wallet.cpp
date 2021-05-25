@@ -1204,9 +1204,9 @@ serializer_wrapper<annotated_signed_transaction> wallet_api::set_voting_proxy(co
 void wallet_api::set_wallet_filename(string wallet_filename) { my->_wallet_filename = std::move(wallet_filename); }
 
 serializer_wrapper<annotated_signed_transaction> wallet_api::sign_transaction(
-  const signed_transaction& tx, bool broadcast /* = false */)
+  const serializer_wrapper<annotated_signed_transaction>& tx, bool broadcast /* = false */)
 { try {
-  signed_transaction appbase_tx( tx );
+  signed_transaction appbase_tx( tx.value );
   annotated_signed_transaction result = my->sign_transaction( appbase_tx, broadcast);
   return { result };
 } FC_CAPTURE_AND_RETHROW( (tx) ) }
