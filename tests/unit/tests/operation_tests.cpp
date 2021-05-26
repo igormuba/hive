@@ -9970,11 +9970,14 @@ BOOST_AUTO_TEST_CASE( recurrent_transfer_max_transfer_processed_per_block_02, * 
 
       // const auto& x = db->create<recurrent_transfer_object>([&](recurrent_transfer_object& obj)
 
+      const auto& from_account = db->get_account(accounts[i].id);
+
       for(size_t j = 0; j < HIVE_MAX_OPEN_RECURRENT_TRANSFERS; ++j)
       {
         if(i == j) continue;
+        const auto& to_account = db->get_account(accounts[j].id);
         const std::string memo{ std::to_string(i) + "|" + std::to_string(j) };
-        const auto& x = db->create<recurrent_transfer_object>( db->head_block_time(), accounts[i].id, accounts[j].id, ASSET( "0.001 TESTS" ), memo, 24, 5 );
+        const auto& x = db->create<recurrent_transfer_object>( db->head_block_time(), from_account, to_account, ASSET( "0.001 TESTS" ), memo, 24, 5 );
         db->modify(x, [&](recurrent_transfer_object& obj){ obj.set_recurrence_trigger_date(db->head_block_time(), obj.recurrence); });
         db->modify(db->get_account(accounts[i].id), [](account_object& obj) { obj.open_recurrent_transfers++;});
         ++created_transfer_objects;
