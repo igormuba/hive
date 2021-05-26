@@ -157,3 +157,17 @@ def test_update():
         logger.info(response)
 
         # tests for 'update_proposal', 'update_proposal_votes' have own group of tests
+
+        #**************************************************************
+        logger.info('get_owner_history...')
+        response = wallet.api.get_owner_history('alice')
+        logger.info(response)
+
+        assert 'result' in response
+        _result = response['result']
+
+        assert len(_result) == 1
+        _data = _result[0]
+
+        assert 'account' in _data
+        assert _data['account'] == 'alice'

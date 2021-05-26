@@ -96,3 +96,41 @@ def test_getters():
 
         assert 'quote' in _current_median_history
         _current_median_history['quote'] == '0.001 TESTS'
+
+        #**************************************************************
+        logger.info('create_account x2...')
+        with wallet.in_single_transaction():
+          wallet.api.create_account('initminer', 'bob', '{}')
+          wallet.api.create_account('initminer', 'carol', '{}')
+
+        logger.info(wallet.last_single_transaction_response)
+
+        assert 'result' in wallet.last_single_transaction_response
+        _result = wallet.last_single_transaction_response['result']
+
+        assert 'ref_block_num' in _result
+        block_number = _result['ref_block_num'] + 1
+
+        #**************************************************************
+        logger.info('Waiting...')
+        init_node.wait_number_of_blocks(22)
+
+        #**************************************************************
+        logger.info('get_ops_in_block...')
+        response = wallet.api.get_ops_in_block( block_number, False )
+        logger.info(response)
+
+        assert 'result' in response
+        _result = response['result']
+
+        assert len(_result) == 5
+        trx = _result[4]
+
+        assert 'op' in trx
+        _op = trx['op']
+
+        assert 'value' in _op
+        _value = _op['value']
+
+        assert 'vesting_shares' in _value
+        assert _value['vesting_shares'] == '0.032585 VESTS'
