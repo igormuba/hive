@@ -1028,9 +1028,7 @@ optional<serializer_wrapper<block_api::api_signed_block_object>> wallet_api::get
   if( res.block.valid() )
     return serializer_wrapper<block_api::api_signed_block_object>{ std::move( *(res.block) ) };
   else
-  {
     return serializer_wrapper<block_api::api_signed_block_object>{ block_api::api_signed_block_object() };
-  }
 }
 
 serializer_wrapper<vector< account_history::api_operation_object >> wallet_api::get_ops_in_block(uint32_t block_num, bool only_virtual)
@@ -1193,9 +1191,13 @@ vector< account_name_type > wallet_api::list_witnesses(const string& lowerbound,
   return result;
 }
 
-optional< database_api::api_witness_object > wallet_api::get_witness( const string& owner_account)
+optional<serializer_wrapper<database_api::api_witness_object>> wallet_api::get_witness( const string& owner_account)
 {
-  return my->get_witness(owner_account);
+  optional<database_api::api_witness_object> res = my->get_witness(owner_account);
+  if( res.valid() )
+    return serializer_wrapper<database_api::api_witness_object>{ std::move( *res ) };
+  else
+    return serializer_wrapper<database_api::api_witness_object>{ database_api::api_witness_object() };
 }
 
 serializer_wrapper<annotated_signed_transaction> wallet_api::set_voting_proxy(const string& account_to_modify, const string& voting_account, bool broadcast /* = false */)

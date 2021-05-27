@@ -657,7 +657,7 @@ class wallet_api
       * @param owner_account the name or id of the witness account owner, or the id of the witness
       * @returns the information about the witness stored in the block chain
       */
-    optional< database_api::api_witness_object > get_witness(const string& owner_account);
+    optional<serializer_wrapper<database_api::api_witness_object>> get_witness(const string& owner_account);
 
     /** Returns conversion requests by an account
       *

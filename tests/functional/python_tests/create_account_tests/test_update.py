@@ -152,13 +152,6 @@ def test_update():
         assert 'memo_key' in _result and _result['memo_key'] == key
 
         #**************************************************************
-        logger.info('update_witness...')
-        response = wallet.api.update_witness('initminer', 'http:\\url.html', 'TST6LLegbAgLAy28EHrffBVuANFWcFgmqRMW13wBmTExqFE9SCkg4', { 'account_creation_fee':{"amount":"2789","precision":3,"nai":"@@000000021"}, 'maximum_block_size' : 131072, 'hbd_interest_rate' : 1000 } )
-        logger.info(response)
-
-        # tests for 'update_proposal', 'update_proposal_votes' have own group of tests
-
-        #**************************************************************
         logger.info('get_owner_history...')
         response = wallet.api.get_owner_history('alice')
         logger.info(response)

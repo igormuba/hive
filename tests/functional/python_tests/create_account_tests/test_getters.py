@@ -35,17 +35,6 @@ def test_getters():
         block_number = _result['ref_block_num'] + 1
 
         #**************************************************************
-        logger.info('get_active_witnesses...')
-        response = wallet.api.get_active_witnesses()
-        logger.info(response)
-
-        assert 'result' in response
-        _result = response['result']
-
-        assert len(_result) > 0
-        assert _result[0] == 'initminer'
-
-        #**************************************************************
         logger.info('get_block...')
         response = wallet.api.get_block(block_number)
         logger.info(response)
