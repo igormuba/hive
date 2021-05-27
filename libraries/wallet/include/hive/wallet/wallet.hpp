@@ -928,10 +928,10 @@ class wallet_api
       bool broadcast = false );
 
     /**
-      * Set up a vesting withdraw request. The request is fulfilled once a week over the next two year (104 weeks).
+      * Set up a vesting withdraw request. The request is fulfilled once a week over the next 13 weeks.
       *
       * @param from The account the VESTS are withdrawn from
-      * @param vesting_shares The amount of VESTS to withdraw over the next two years. Each week (amount/104) shares are
+      * @param vesting_shares The amount of VESTS to withdraw over the next 13 weeks. Each week (amount/13) shares are
       *    withdrawn and deposited back as HIVE. i.e. "10.000000 VESTS"
       * @param broadcast true if you wish to broadcast the transaction
       */

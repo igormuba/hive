@@ -18,6 +18,11 @@ def test_getters():
         response = wallet.api.create_account('initminer', 'alice', '{}')
         logger.info(response)
 
+        assert 'result' in response
+        _result = response['result']
+
+        assert 'transaction_id' in _result
+        transaction_id = _result['transaction_id']
         #**************************************************************
         logger.info('transfer_to_vesting...')
         response = wallet.api.transfer_to_vesting('initminer', 'alice', '500.000 TESTS')
@@ -134,3 +139,41 @@ def test_getters():
 
         assert 'vesting_shares' in _value
         assert _value['vesting_shares'] == '0.032585 VESTS'
+
+        #**************************************************************
+        logger.info('get_prototype_operation...')
+        response = wallet.api.get_prototype_operation( 'transfer_operation' )
+        logger.info(response)
+
+        assert 'result' in response
+        _result = response['result']
+
+        assert 'value' in _result
+        _value = _result['value']
+
+        assert 'amount' in _value
+        assert _value['amount'] == '0.000 TESTS'
+
+        #**************************************************************
+        logger.info('get_transaction...')
+        response = wallet.api.get_transaction(transaction_id)
+        logger.info(response)
+
+        assert 'result' in response
+        _result = response['result']
+
+        assert 'operations' in _result
+        _ops = _result['operations']
+
+        assert len(_ops) == 1
+        _op = _ops[0]
+
+        assert 'type' in _op
+        _op['type'] == 'account_create_operation'
+
+        assert 'value' in _op
+        _value = _op['value']
+
+        assert 'fee' in _value
+        assert _value['fee'] == '0.000 TESTS'
+
