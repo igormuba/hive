@@ -2,6 +2,7 @@ stages:
 - build
 - test
 - package
+- deploy 
 
 variables:
   GIT_DEPTH: 1
@@ -181,4 +182,14 @@ package_consensus_node:
     - "docker push $CI_REGISTRY_IMAGE/consensus_node:$CI_COMMIT_SHORT_SHA"
     - "echo ===> the consensus node image for this build is: $CI_REGISTRY_IMAGE/consensus_node:$CI_COMMIT_SHORT_SHA"
   tags:
+    - public-runner-docker
+
+first_deploy:
+  stage: deploy
+  needs:
+    job: package_consensus_node
+  image: "$CI_REGISTRY_IMAGE/test$TEST_IMAGE_TAG"
+  script:
+    - echo "here will be deploy"
+  tags: 
     - public-runner-docker
