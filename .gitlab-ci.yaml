@@ -53,7 +53,7 @@ first_deploy:
   stage: deploy
   needs:
     job: package_consensus_node
-  image: "$CI_REGISTRY_IMAGE/test$TEST_IMAGE_TAG"
+  image: docker:19.03.11
   when: manual
   services:
     - docker:19.03.11-dind
