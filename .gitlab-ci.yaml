@@ -65,6 +65,6 @@ first_deploy:
     - ssh-add ${PRIVATE_SSH_KEY}
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh ${SSH_USER}@${DOCKER_HOST} -p 22122 "/usr/bin/touch deployed_to_production.$(date +%s)"
+    - ssh ${SSH_USER}@${HOST_DOCKER} -p 22122 "/usr/bin/touch deployed_to_production.$(date +%s)"
   tags:
     - snake-runner-docker
