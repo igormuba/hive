@@ -1,7 +1,7 @@
 stages:
 - build
 - package
-- deploy 
+- deploy
 
 variables:
   GIT_DEPTH: 1
@@ -53,11 +53,18 @@ first_deploy:
   stage: deploy
   needs:
     job: package_consensus_node
-  image: "$CI_REGISTRY_IMAGE/test$TEST_IMAGE_TAG"
+  image: ubuntu:20.04
   when: manual
   script:
-    - "echo here will be deploy"
     - "echo registry: $CI_REGISTRY"
     - "echo image   : $CI_REGISTRY_IMAGE/consensus_node:$CI_COMMIT_SHORT_SHA"
-  tags: 
+    - apt update -qq
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - chmod 700 ${PRIVATE_SSH_KEY}
+    - ssh-add ${PRIVATE_SSH_KEY}
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh ${SSH_USER}@${DOCKER_HOST} -p 22122 "/usr/bin/touch deployed_to_production.$(date +%s)"
+  tags:
     - snake-runner-docker
