@@ -53,18 +53,18 @@ first_deploy:
   stage: deploy
   needs:
     job: package_consensus_node
-  image: ubuntu:20.04
+  only:
+    - master
   when: manual
+  image: ubuntu:20.04
   script:
-    - "echo registry: $CI_REGISTRY"
-    - "echo image   : $CI_REGISTRY_IMAGE/consensus_node:$CI_COMMIT_SHORT_SHA"
     - apt update -qq
     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
-    - chmod 700 ${PRIVATE_SSH_KEY}
-    - ssh-add ${PRIVATE_SSH_KEY}
+    - chmod 700 ${DEPLOY_SSH_KEY}
+    - ssh-add ${DEPLOY_SSH_KEY}
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh ${SSH_USER}@${HOST_DOCKER} -p 22122 "/usr/bin/touch deployed_to_production.$(date +%s)"
+    - cat ./ciscripts/deploy.sh | ssh ${DEPLOY_SSH_USER}@${DEPLOY_DOCKER_HOST} -p ${DEPLOY_DOCKER_HOST_SSH_PORT}  2> /dev/null
   tags:
     - snake-runner-docker
