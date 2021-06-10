@@ -56,12 +56,10 @@ first_deploy:
   needs:
     job: package_consensus_node
   when: manual
-  image: ubuntu:20.04
-  before_script:
-    - git pull --recurse-submodules
+  image: "$CI_REGISTRY_IMAGE/builder$BUILDER_IMAGE_TAG"
   script:
     - apt update -qq
-    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - 'which ssh-agent || ( apt-get install -qq openssh-client git )'
     - eval $(ssh-agent -s)
     - chmod 700 ${DEPLOY_SSH_KEY}
     - ssh-add ${DEPLOY_SSH_KEY}
