@@ -53,8 +53,8 @@ first_deploy:
   stage: deploy
   needs:
     job: package_consensus_node
-  only:
-    - master
+  # only:
+  #   - master
   when: manual
   image: ubuntu:20.04
   script:
