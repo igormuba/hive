@@ -50,6 +50,8 @@ package_consensus_node:
     - public-runner-docker
 
 first_deploy:
+  variables:
+    GIT_SUBMODULE_STRATEGY: none
   stage: deploy
   needs:
     job: package_consensus_node
