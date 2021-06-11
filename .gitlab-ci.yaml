@@ -232,7 +232,19 @@ test_tools_tests:
   artifacts:
     name: "test-artifacts"
     paths:
-    - "$CI_PROJECT_DIR/**/generated"
+    - "$CI_PROJECT_DIR/generated"
+    - "$CI_PROJECT_DIR/*/generated"
+    - "$CI_PROJECT_DIR/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/*/*/*/*/*/generated"
+    - "$CI_PROJECT_DIR/*/*/*/*/*/*/*/*/*/*/*/*/generated"
     expire_in: 1 hours
   script:
     - pip3 install pytest
