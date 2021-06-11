@@ -65,6 +65,6 @@ first_deploy:
     - ssh-add ${DEPLOY_SSH_KEY}
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - cat ./ciscripts/deploy.sh | ssh ${DEPLOY_SSH_USER}@${DEPLOY_DOCKER_HOST} -p ${DEPLOY_DOCKER_HOST_SSH_PORT}  2> /dev/null
+    - cat ./ciscripts/deploy.sh | ssh ${DEPLOY_SSH_USER}@${DEPLOY_DOCKER_HOST} -p ${DEPLOY_DOCKER_HOST_SSH_PORT} # 2> /dev/null
   tags:
     - snake-runner-docker
